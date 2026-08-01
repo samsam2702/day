@@ -12,18 +12,21 @@ export default function EnvelopePage() {
   const { friend } = useFriend()
 
   return (
-    <PageShell bg="bg-gradient-to-b from-paper via-blush-light to-paper">
-      {friend && (
-        <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={10} />
-      )}
-
+    <PageShell
+      bg="bg-gradient-to-b from-paper via-blush-light to-paper"
+      decor={
+        friend && (
+          <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={10} />
+        )
+      }
+    >
       <motion.p
         variants={fadeUp}
         initial="initial"
         animate="animate"
         className="mb-14 font-display text-xl text-ink/70"
       >
-        A letter, just for {friend?.name}
+        {siteConfig.envelope.subtitle} {friend?.name}
       </motion.p>
 
       <Envelope

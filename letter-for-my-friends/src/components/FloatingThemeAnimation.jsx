@@ -4,15 +4,20 @@ import { FLOATING_ANIMATION_TYPES } from '../data/friends'
 
 /**
  * Renders exactly ONE friend's floating ambient animation — never
- * mixed with another theme. The `type` prop maps to a distinct
- * visual treatment:
+ * mixed with another theme. Every item has a random position, size,
+ * and speed, fades in and out, and — critically — uses KEYFRAME
+ * ARRAYS (not single target values) for the properties that repeat,
+ * so `transition.repeat: Infinity` actually has something to loop
+ * between. (A single target value with `repeat: Infinity` reaches
+ * its target once and then has nothing left to animate, which is
+ * why the old version looked static after the first pass.)
  *
- *  - hearts-pink    single soft pink hearts drifting up
- *  - hearts-double  pairs of hearts drifting up together
- *  - stars          twinkling stars (opacity pulse, no upward drift)
- *  - sunshine       small warm sparks drifting up
- *  - hearts-purple  single lavender hearts drifting up
- *  - hearts-red     single soft red hearts drifting up
+ *  - hearts-pink    single soft pink hearts rising forever
+ *  - hearts-double  pairs of hearts rising forever
+ *  - stars          twinkling stars drifting slowly across the screen
+ *  - sunshine       small warm sparks rising forever
+ *  - hearts-purple  single lavender hearts rising forever
+ *  - hearts-red     single soft red hearts rising forever
  *
  * @param {{ type: string, color: string, count?: number }} props
  */
@@ -22,10 +27,11 @@ export default function FloatingThemeAnimation({ type, color, count = 16 }) {
       Array.from({ length: count }, (_, i) => ({
         id: i,
         left: `${4 + Math.random() * 92}%`,
-        size: 12 + Math.random() * 14,
+        top: `${Math.random() * 90}%`,
+        size: 12 + Math.random() * 16,
         delay: Math.random() * 6,
-        duration: 7 + Math.random() * 6,
-        drift: (Math.random() - 0.5) * 60,
+        duration: 6 + Math.random() * 7, // different speeds
+        drift: (Math.random() - 0.5) * 70,
       })),
     [count, type]
   )
@@ -38,17 +44,25 @@ export default function FloatingThemeAnimation({ type, color, count = 16 }) {
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {items.map((item) => {
         if (isStars) {
+          // Twinkling stars that also drift slowly across the whole screen.
+          const startX = -10 + Math.random() * 20 // start near the left edge
+          const endX = 90 + Math.random() * 20 // drift past the right edge
           return (
             <motion.span
               key={item.id}
-              className="absolute"
-              style={{ left: item.left, top: `${(item.id * 37) % 90}%`, fontSize: item.size, color }}
-              animate={{ opacity: [0.15, 1, 0.15], scale: [0.8, 1.15, 0.8] }}
+              className="absolute select-none"
+              style={{ top: item.top, fontSize: item.size, color }}
+              initial={{ left: `${startX}%`, opacity: 0, scale: 0.7 }}
+              animate={{
+                left: [`${startX}%`, `${endX}%`],
+                opacity: [0, 1, 0.3, 1, 0.3, 0],
+                scale: [0.7, 1.2, 0.85, 1.15, 0.8, 0.7],
+              }}
               transition={{
-                duration: item.duration * 0.6,
+                duration: item.duration * 1.8,
                 delay: item.delay,
                 repeat: Infinity,
-                ease: 'easeInOut',
+                ease: 'linear',
               }}
             >
               ✦
@@ -63,13 +77,17 @@ export default function FloatingThemeAnimation({ type, color, count = 16 }) {
               className="absolute rounded-full"
               style={{
                 left: item.left,
-                bottom: '-5%',
+                bottom: 0,
                 width: item.size * 0.4,
                 height: item.size * 0.4,
                 backgroundColor: color,
               }}
-              initial={{ y: 0, opacity: 0 }}
-              animate={{ y: '-110vh', opacity: [0, 0.9, 0.9, 0], x: [0, item.drift] }}
+              initial={{ y: 0, opacity: 0, x: 0 }}
+              animate={{
+                y: [0, '-45vh', '-110vh'],
+                opacity: [0, 0.9, 0.9, 0],
+                x: [0, item.drift * 0.5, item.drift],
+              }}
               transition={{
                 duration: item.duration,
                 delay: item.delay,
@@ -85,9 +103,13 @@ export default function FloatingThemeAnimation({ type, color, count = 16 }) {
           <motion.span
             key={item.id}
             className="absolute select-none"
-            style={{ left: item.left, bottom: '-8%', fontSize: item.size, color }}
-            initial={{ y: 0, opacity: 0 }}
-            animate={{ y: '-115vh', opacity: [0, 0.85, 0.85, 0], x: [0, item.drift] }}
+            style={{ left: item.left, bottom: 0, fontSize: item.size, color }}
+            initial={{ y: 0, opacity: 0, x: 0 }}
+            animate={{
+              y: [0, '-55vh', '-115vh'],
+              opacity: [0, 0.85, 0.85, 0],
+              x: [0, item.drift * 0.5, item.drift],
+            }}
             transition={{
               duration: item.duration,
               delay: item.delay,

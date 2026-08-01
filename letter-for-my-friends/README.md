@@ -26,13 +26,20 @@ Each step is its own full-screen page, connected with React Router
 and animated with Framer Motion:
 
 ```
-Welcome → Name Selection → Envelope → Letter → Friendship Jar
-→ Voice Message → Download Letter → Ending
+Welcome → Name (type-your-name) → Envelope → Letter → Little Jar
+→ Voice Message* → Keep This Little Letter → Before You Leave → Goodbye
 ```
 
+\* skipped automatically for any friend with `voiceNote: null`.
+
 Visiting `/letter`, `/jar`, `/voice`, `/download`, or `/ending`
-directly (without picking a friend first) redirects back to
-`/name` — see `src/components/RequireFriend.jsx`.
+directly (without entering a valid name first) redirects back to
+`/name` — see `src/components/RequireFriend.jsx`. `/goodbye` is the
+one exception: it's a generic, friend-agnostic closing screen, so
+it's reachable directly.
+
+Name entry (`/name`) is a text input, not a visible list of names —
+see "Personalizing content" below for how matching works.
 
 ## Personalizing content — one file, no code changes
 
@@ -42,8 +49,11 @@ To personalize the site:
 
 1. Open `src/data/friends.js`.
 2. Edit the six friend entries — Samya, Saniya, Shafin, Shobanaa,
-   Shanofar, Roshini (or add/remove entries — the Name Selection
-   page and jar automatically reflect the array).
+   Shanofar, Roshini (or add/remove entries — the Name page and jar
+   automatically reflect the array). On `/name`, whatever's typed is
+   trimmed, lowercased, and matched against each friend's `name` —
+   so "samya", "Samya ", and "SAMYA" all resolve to the same entry.
+   No match shows a gentle inline error instead of navigating on.
 3. For each friend, fill in:
    - `name` — shown on their name card
    - `themeColor` — a soft hex accent unique to that friend
@@ -65,7 +75,11 @@ To personalize the site:
    - `photo` — optional path to a polaroid-style photo
 
 Site-wide copy that isn't tied to one friend (page titles, button
-labels, the ending message) lives in `src/data/siteConfig.js`.
+labels, the celebration lines, the "Before you leave" write-back
+section, and the final "P.S." message) lives in
+`src/data/siteConfig.js` — every string there is written to read
+like it was handwritten by a close friend, so feel free to rewrite
+any of it to sound like you.
 
 ## Adding your media
 
@@ -92,21 +106,29 @@ it.
 
 ```
 src/
-  components/     Reusable UI: Envelope, FriendshipJar, Waveform,
-                   TypewriterText, PageShell, Button, Confetti,
-                   FloatingSparkles (pre-selection pages),
-                   FloatingThemeAnimation (per-friend themed
-                   animation), HeartCursor, MusicPlayer,
-                   RequireFriend
-  pages/          One file per full-screen story step
+  components/     Reusable UI: Envelope (multi-step open animation),
+                   FriendshipJar (jar-to-tray note extraction),
+                   BeforeYouLeave (write-back section + form),
+                   Waveform, TypewriterText, PageShell (with a
+                   full-bleed `decor` layer for ambient animations),
+                   Button, Confetti, FloatingSparkles
+                   (pre-selection pages), FloatingThemeAnimation
+                   (per-friend themed animation), HeartCursor,
+                   MusicPlayer, RequireFriend
+  pages/          One file per full-screen story step, including
+                   EndingPage (celebration + write-back) and
+                   GoodbyePage (the final peaceful P.S. screen)
   animations/     Shared Framer Motion variants (variants.js)
   context/        FriendContext — holds the selected friend
                    across the whole app (session-persisted)
   data/           friends.js (personalization) and
                    siteConfig.js (site-wide copy)
   utils/          downloadLetter.js (html2canvas export),
-                   sparkles.js (ambient sparkle positions)
-  assets/         music / voice / images / textures
+                   sparkles.js (ambient sparkle positions),
+                   writeBackStorage.js (saves "write me a letter"
+                   messages — currently to localStorage, written to
+                   be swapped for EmailJS/Firebase/a backend later)
+  assets/         music / voices / images / textures
 ```
 
 ## Design notes
@@ -117,10 +139,22 @@ src/
 - Typography: **Gowun Batang** (Korean-inspired serif) for display
   text, **Gaegu/Caveat** for handwritten letter text, **Pretendard**
   for UI/body text.
-- The envelope on `/envelope` (`src/components/Envelope.jsx`) is a
-  real 3D-hinged flap (CSS `rotateX` + `perspective`) with a letter
-  that physically slides up and out from inside the pocket — not a
-  fake reveal.
+- The envelope on `/envelope` (`src/components/Envelope.jsx`) runs a
+  five-step physical sequence: the wax seal breaks and fades, the
+  flap opens on a 3D hinge, the folded letter slides up out of the
+  pocket, it unfolds open, then the camera zooms in before handing
+  off to the Letter page. Nothing is faked with a reveal-behind
+  trick — the letter is a real element that moves the whole way.
+- Floating ambient animations (`FloatingThemeAnimation.jsx`) render
+  in a full-bleed `decor` layer on `PageShell` rather than inside the
+  centered content column — this is what makes them drift across the
+  *entire* screen instead of being clipped to a narrow strip. Each
+  uses keyframe arrays (not single target values) so the
+  infinite-repeat loop actually has something to animate between.
+- The Friendship Jar (`FriendshipJar.jsx`) uses a shared
+  `layoutId` between the folded paper's position inside the jar and
+  its resting spot in the tray beside it, so taking a note out
+  animates smoothly between the two — no manual position math.
 - The heart cursor trail (`HeartCursor.jsx`) only activates on
   devices with a fine pointer and hover support, so it's
   automatically skipped on touch/mobile.
@@ -129,6 +163,14 @@ src/
   `/voice` route itself both redirect straight to Download.
 - Downloaded letters are named `friendship-letter-[friend-name].png`
   (see `src/pages/DownloadPage.jsx`).
+- The "Before you leave..." section (`BeforeYouLeave.jsx`, shown on
+  the Ending page) lets a friend write a message back; it's saved
+  via `saveWriteBackMessage()` in `src/utils/writeBackStorage.js`,
+  which currently writes to `localStorage` but is deliberately
+  structured so you can drop in an EmailJS, Firebase, or custom API
+  call later without touching the component.
+- The final `/goodbye` screen is intentionally bare — no buttons, no
+  navigation, just a fade-in "P.S." and a tiny floating heart.
 - Reduced-motion preferences are respected globally (see
   `src/index.css`).
 

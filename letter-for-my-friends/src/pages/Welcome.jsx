@@ -10,9 +10,10 @@ export default function Welcome() {
   const navigate = useNavigate()
 
   return (
-    <PageShell bg="bg-gradient-to-b from-blush-light via-paper to-sage-light">
-      <FloatingSparkles count={22} />
-
+    <PageShell
+      bg="bg-gradient-to-b from-blush-light via-paper to-sage-light"
+      decor={<FloatingSparkles count={22} />}
+    >
       <motion.p
         variants={fadeUp}
         initial="initial"

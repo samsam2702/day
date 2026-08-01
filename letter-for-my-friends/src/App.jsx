@@ -12,6 +12,7 @@ import JarPage from './pages/JarPage'
 import VoiceMessagePage from './pages/VoiceMessagePage'
 import DownloadPage from './pages/DownloadPage'
 import EndingPage from './pages/EndingPage'
+import GoodbyePage from './pages/GoodbyePage'
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -69,6 +70,7 @@ function AnimatedRoutes() {
             </RequireFriend>
           }
         />
+        <Route path="/goodbye" element={<GoodbyePage />} />
       </Routes>
     </AnimatePresence>
   )

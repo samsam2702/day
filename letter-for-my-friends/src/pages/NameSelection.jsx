@@ -1,61 +1,86 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageShell from '../components/PageShell'
-import { fadeUp, staggerContainer } from '../animations/variants'
+import Button from '../components/Button'
+import { fadeUp } from '../animations/variants'
 import { useFriend } from '../context/FriendContext'
 import friends from '../data/friends'
 import siteConfig from '../data/siteConfig'
 
+/**
+ * Instead of showing every friend's name up front, this page asks
+ * for a name and quietly matches it against friends.js. Matching is
+ * case-insensitive and trims whitespace, so "samya", "Samya ", and
+ * "SAMYA" all resolve to the same friend.
+ */
 export default function NameSelection() {
   const navigate = useNavigate()
   const { selectFriend } = useFriend()
+  const [value, setValue] = useState('')
+  const [error, setError] = useState(false)
 
-  const handleSelect = (id) => {
-    selectFriend(id)
-    navigate('/envelope')
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const query = value.trim().toLowerCase()
+    if (!query) return
+
+    const match = friends.find((f) => f.name.toLowerCase() === query)
+
+    if (match) {
+      setError(false)
+      selectFriend(match.id)
+      navigate('/envelope')
+    } else {
+      setError(true)
+    }
   }
 
   return (
     <PageShell>
-      <motion.p
-        variants={fadeUp}
-        initial="initial"
-        animate="animate"
-        className="font-body text-xs uppercase tracking-[0.25em] text-ink/50"
-      >
-        {siteConfig.namePage.eyebrow}
-      </motion.p>
-
       <motion.h1
         variants={fadeUp}
-        custom={0.15}
         initial="initial"
         animate="animate"
-        className="mt-3 font-display text-3xl text-ink"
+        className="font-display text-3xl text-ink"
       >
         {siteConfig.namePage.question}
       </motion.h1>
 
-      <motion.div
-        variants={staggerContainer}
+      <motion.form
+        variants={fadeUp}
+        custom={0.15}
         initial="initial"
         animate="animate"
-        className="mt-10 grid w-full grid-cols-2 gap-4 sm:grid-cols-3"
+        onSubmit={handleSubmit}
+        className="mt-10 flex w-full max-w-xs flex-col items-center gap-4"
       >
-        {friends.map((f) => (
-          <motion.button
-            key={f.id}
-            variants={fadeUp}
-            onClick={() => handleSelect(f.id)}
-            whileHover={{ y: -4 }}
-            whileTap={{ scale: 0.97 }}
-            className="rounded-2xl border border-ink/10 bg-paper px-4 py-6 font-display text-lg text-ink shadow-card transition-shadow hover:shadow-soft"
-            style={{ borderTopColor: f.themeColor, borderTopWidth: 3 }}
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value)
+            if (error) setError(false)
+          }}
+          placeholder={siteConfig.namePage.placeholder}
+          autoFocus
+          className="w-full rounded-full border border-ink/15 bg-paper px-6 py-3 text-center font-hand text-xl text-ink shadow-card placeholder:text-ink/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        />
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="font-body text-xs text-ink/50"
           >
-            {f.name}
-          </motion.button>
-        ))}
-      </motion.div>
+            {siteConfig.namePage.errorMessage}
+          </motion.p>
+        )}
+
+        <Button type="submit" className="mt-2">
+          {siteConfig.namePage.button}
+        </Button>
+      </motion.form>
     </PageShell>
   )
 }

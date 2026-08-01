@@ -35,8 +35,11 @@ export default function VoiceMessagePage() {
   }
 
   return (
-    <PageShell>
-      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+    <PageShell
+      decor={
+        <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+      }
+    >
       <MusicPlayer />
 
       <motion.h1 variants={fadeUp} initial="initial" animate="animate" className="font-display text-2xl text-ink">
@@ -77,7 +80,7 @@ export default function VoiceMessagePage() {
       />
 
       <motion.div variants={fadeUp} custom={0.6} initial="initial" animate="animate" className="mt-14">
-        <Button onClick={() => navigate('/download')}>Continue</Button>
+        <Button onClick={() => navigate('/download')}>Almost there 🌸</Button>
       </motion.div>
     </PageShell>
   )

@@ -26,12 +26,19 @@ export default function LetterPage() {
   const allParagraphsDone = paragraphIndex >= body.length
 
   return (
-    <PageShell bg="bg-paper">
-      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={10} />
+    <PageShell
+      bg="bg-paper"
+      decor={
+        <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={10} />
+      }
+    >
       <MusicPlayer />
 
-      <div
-        className="relative w-full max-w-lg rounded-sm bg-paper px-8 py-12 shadow-letter sm:px-12"
+      <motion.div
+        variants={fadeUp}
+        initial="initial"
+        animate="animate"
+        className="relative w-full max-w-lg rounded-[28px] bg-paper px-8 py-14 shadow-letter ring-1 ring-ink/5 sm:px-14 sm:py-16"
         style={{
           backgroundImage: "url('/src/assets/textures/paper-texture.svg')",
           backgroundSize: 'cover',
@@ -40,18 +47,18 @@ export default function LetterPage() {
         <TypewriterText
           text={greeting}
           speed={38}
-          className="font-hand text-2xl leading-relaxed text-ink"
+          className="font-hand text-3xl leading-relaxed text-ink"
           onDone={() => setGreetingDone(true)}
         />
 
         {greetingDone && (
-          <div className="mt-6 space-y-4">
+          <div className="mt-7 space-y-5">
             {body.slice(0, paragraphIndex + 1).map((para, i) => (
               <TypewriterText
                 key={i}
                 text={para}
                 speed={14}
-                className="font-body text-sm leading-relaxed text-ink/80"
+                className="font-hand text-lg leading-relaxed text-ink/80"
                 onDone={() => {
                   if (i === paragraphIndex) setParagraphIndex((p) => p + 1)
                 }}
@@ -66,13 +73,13 @@ export default function LetterPage() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="mt-8 whitespace-pre-line font-hand text-lg text-ink/90"
+              className="mt-9 whitespace-pre-line font-hand text-xl text-ink/90"
             >
               {signoff}
             </motion.p>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {allParagraphsDone && (
@@ -80,9 +87,9 @@ export default function LetterPage() {
             variants={fadeUp}
             initial="initial"
             animate="animate"
-            className="mt-10"
+            className="mt-12"
           >
-            <Button onClick={() => navigate('/jar')}>Continue</Button>
+            <Button onClick={() => navigate('/jar')}>Take me to the little jar 🫙</Button>
           </motion.div>
         )}
       </AnimatePresence>

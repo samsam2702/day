@@ -29,8 +29,11 @@ export default function DownloadPage() {
   }
 
   return (
-    <PageShell>
-      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+    <PageShell
+      decor={
+        <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+      }
+    >
       <MusicPlayer />
 
       <motion.h1 variants={fadeUp} initial="initial" animate="animate" className="font-display text-2xl text-ink">
@@ -53,7 +56,7 @@ export default function DownloadPage() {
         initial="initial"
         animate="animate"
         ref={letterRef}
-        className="mt-8 w-full max-w-md rounded-sm bg-paper px-8 py-10 text-left shadow-letter"
+        className="mt-8 w-full max-w-md rounded-[24px] bg-paper px-8 py-10 text-left shadow-letter ring-1 ring-ink/5 sm:px-10 sm:py-12"
         style={{
           backgroundImage: "url('/src/assets/textures/paper-texture.svg')",
           backgroundSize: 'cover',
@@ -62,7 +65,7 @@ export default function DownloadPage() {
         <p className="whitespace-pre-line font-hand text-2xl text-ink">{friend.letter.greeting}</p>
         <div className="mt-5 space-y-3">
           {friend.letter.body.map((para, i) => (
-            <p key={i} className="font-body text-sm leading-relaxed text-ink/80">
+            <p key={i} className="font-hand text-base leading-relaxed text-ink/80">
               {para}
             </p>
           ))}
@@ -72,13 +75,13 @@ export default function DownloadPage() {
 
       <motion.div variants={fadeUp} custom={0.4} initial="initial" animate="animate" className="mt-8">
         <Button onClick={handleDownload} disabled={downloading}>
-          {downloading ? 'Preparing...' : siteConfig.download.button}
+          {downloading ? 'Wrapping it up...' : siteConfig.download.button}
         </Button>
       </motion.div>
 
       <motion.div variants={fadeUp} custom={0.55} initial="initial" animate="animate" className="mt-6">
         <Button variant="ghost" onClick={() => navigate('/ending')}>
-          Continue
+          Continue 🤍
         </Button>
       </motion.div>
     </PageShell>

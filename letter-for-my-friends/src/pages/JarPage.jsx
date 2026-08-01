@@ -22,8 +22,12 @@ export default function JarPage() {
   }
 
   return (
-    <PageShell bg="bg-gradient-to-b from-sage-light via-paper to-paper">
-      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+    <PageShell
+      bg="bg-gradient-to-b from-sage-light via-paper to-paper"
+      decor={
+        <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+      }
+    >
       <MusicPlayer />
 
       <motion.h1 variants={fadeUp} initial="initial" animate="animate" className="font-display text-2xl text-ink">
@@ -39,12 +43,12 @@ export default function JarPage() {
         {siteConfig.jar.subtitle}
       </motion.p>
 
-      <motion.div variants={fadeUp} custom={0.25} initial="initial" animate="animate" className="mt-8">
+      <motion.div variants={fadeUp} custom={0.25} initial="initial" animate="animate" className="mt-10 w-full">
         <FriendshipJar notes={friend.jarNotes} />
       </motion.div>
 
-      <motion.div variants={fadeUp} custom={0.4} initial="initial" animate="animate" className="mt-10">
-        <Button onClick={handleContinue}>Continue</Button>
+      <motion.div variants={fadeUp} custom={0.4} initial="initial" animate="animate" className="mt-12">
+        <Button onClick={handleContinue}>One more little thing 🤍</Button>
       </motion.div>
     </PageShell>
   )
