@@ -17,9 +17,9 @@ import { motion } from 'framer-motion'
  *  3. the whole envelope gently scales up ("camera zoom")
  *  4. onOpened() fires so the parent can navigate to the Letter page
  *
- * @param {{ friendName: string, onOpened: () => void }} props
+ * @param {{ friendName: string, themeColor?: string, onOpened: () => void }} props
  */
-export default function Envelope({ friendName, onOpened }) {
+export default function Envelope({ friendName, themeColor = '#C6A671', onOpened }) {
   const [phase, setPhase] = useState('closed') // closed -> flap-open -> letter-out -> zoom
 
   const handleTap = () => {
@@ -106,7 +106,8 @@ export default function Envelope({ friendName, onOpened }) {
 
         {/* Wax seal — fades out the moment the flap starts moving */}
         <motion.div
-          className="absolute left-1/2 top-[58px] z-40 -translate-x-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-gold text-paper shadow-card"
+          className="absolute left-1/2 top-[58px] z-40 -translate-x-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full text-paper shadow-card"
+          style={{ backgroundColor: themeColor }}
           animate={{ opacity: phase === 'closed' ? 1 : 0, scale: phase === 'closed' ? 1 : 0.6 }}
           transition={{ duration: 0.35 }}
         >

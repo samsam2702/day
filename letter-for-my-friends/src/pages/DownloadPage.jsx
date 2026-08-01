@@ -2,7 +2,8 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageShell from '../components/PageShell'
-import MusicToggle from '../components/MusicToggle'
+import FloatingThemeAnimation from '../components/FloatingThemeAnimation'
+import MusicPlayer from '../components/MusicPlayer'
 import Button from '../components/Button'
 import { fadeUp } from '../animations/variants'
 import { useFriend } from '../context/FriendContext'
@@ -20,7 +21,8 @@ export default function DownloadPage() {
   const handleDownload = async () => {
     setDownloading(true)
     try {
-      await downloadNodeAsImage(letterRef.current, `letter-for-${friend.id}`)
+      // friendship-letter-[friend-name].png
+      await downloadNodeAsImage(letterRef.current, `friendship-letter-${friend.name.toLowerCase()}`)
     } finally {
       setDownloading(false)
     }
@@ -28,7 +30,8 @@ export default function DownloadPage() {
 
   return (
     <PageShell>
-      <MusicToggle />
+      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+      <MusicPlayer />
 
       <motion.h1 variants={fadeUp} initial="initial" animate="animate" className="font-display text-2xl text-ink">
         {siteConfig.download.title}

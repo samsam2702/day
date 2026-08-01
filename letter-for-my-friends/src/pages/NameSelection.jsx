@@ -50,7 +50,7 @@ export default function NameSelection() {
             whileHover={{ y: -4 }}
             whileTap={{ scale: 0.97 }}
             className="rounded-2xl border border-ink/10 bg-paper px-4 py-6 font-display text-lg text-ink shadow-card transition-shadow hover:shadow-soft"
-            style={{ borderTopColor: f.accentColor, borderTopWidth: 3 }}
+            style={{ borderTopColor: f.themeColor, borderTopWidth: 3 }}
           >
             {f.name}
           </motion.button>

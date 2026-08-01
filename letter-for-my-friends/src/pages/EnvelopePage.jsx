@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageShell from '../components/PageShell'
 import Envelope from '../components/Envelope'
-import FloatingSparkles from '../components/FloatingSparkles'
+import FloatingThemeAnimation from '../components/FloatingThemeAnimation'
 import { fadeUp } from '../animations/variants'
 import { useFriend } from '../context/FriendContext'
 import siteConfig from '../data/siteConfig'
@@ -13,7 +13,9 @@ export default function EnvelopePage() {
 
   return (
     <PageShell bg="bg-gradient-to-b from-paper via-blush-light to-paper">
-      <FloatingSparkles count={14} color={friend?.accentColor || '#C6A671'} />
+      {friend && (
+        <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={10} />
+      )}
 
       <motion.p
         variants={fadeUp}
@@ -24,7 +26,11 @@ export default function EnvelopePage() {
         A letter, just for {friend?.name}
       </motion.p>
 
-      <Envelope friendName={friend?.name} onOpened={() => navigate('/letter')} />
+      <Envelope
+        friendName={friend?.name}
+        themeColor={friend?.themeColor}
+        onOpened={() => navigate('/letter')}
+      />
 
       <motion.p
         variants={fadeUp}

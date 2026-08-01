@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageShell from '../components/PageShell'
 import Waveform from '../components/Waveform'
-import MusicToggle from '../components/MusicToggle'
+import FloatingThemeAnimation from '../components/FloatingThemeAnimation'
+import MusicPlayer from '../components/MusicPlayer'
 import Button from '../components/Button'
 import { fadeUp } from '../animations/variants'
 import { useFriend } from '../context/FriendContext'
@@ -16,6 +17,10 @@ export default function VoiceMessagePage() {
   const [playing, setPlaying] = useState(false)
 
   if (!friend) return null
+
+  // Friends with voiceNote: null (e.g. Roshini) never see this page —
+  // send them straight through to Download instead.
+  if (!friend.voiceNote) return <Navigate to="/download" replace />
 
   const togglePlay = () => {
     const audio = audioRef.current
@@ -31,7 +36,8 @@ export default function VoiceMessagePage() {
 
   return (
     <PageShell>
-      <MusicToggle />
+      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+      <MusicPlayer />
 
       <motion.h1 variants={fadeUp} initial="initial" animate="animate" className="font-display text-2xl text-ink">
         {siteConfig.voice.title}

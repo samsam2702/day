@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import PageShell from '../components/PageShell'
-import FloatingSparkles from '../components/FloatingSparkles'
+import FloatingThemeAnimation from '../components/FloatingThemeAnimation'
 import TypewriterText from '../components/TypewriterText'
-import MusicToggle from '../components/MusicToggle'
+import MusicPlayer from '../components/MusicPlayer'
 import Button from '../components/Button'
 import { fadeUp } from '../animations/variants'
 import { useFriend } from '../context/FriendContext'
@@ -27,8 +27,8 @@ export default function LetterPage() {
 
   return (
     <PageShell bg="bg-paper">
-      <FloatingSparkles count={10} color={friend.accentColor} />
-      <MusicToggle />
+      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={10} />
+      <MusicPlayer />
 
       <div
         className="relative w-full max-w-lg rounded-sm bg-paper px-8 py-12 shadow-letter sm:px-12"

@@ -38,11 +38,6 @@ const siteConfig = {
       'Happy Friendship Day 🤍',
     ],
   },
-  music: {
-    // Put your background track here — see README for asset instructions.
-    src: '/src/assets/music/background.mp3',
-    volume: 0.35,
-  },
 }
 
 export default siteConfig

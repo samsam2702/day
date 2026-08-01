@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import PageShell from '../components/PageShell'
-import FloatingSparkles from '../components/FloatingSparkles'
+import FloatingThemeAnimation from '../components/FloatingThemeAnimation'
 import Confetti from '../components/Confetti'
 import Button from '../components/Button'
 import { fadeUp } from '../animations/variants'
@@ -20,7 +20,9 @@ export default function EndingPage() {
   return (
     <PageShell bg="bg-gradient-to-b from-paper via-blush-light to-sage-light">
       <Confetti />
-      <FloatingSparkles count={16} color={friend?.accentColor} />
+      {friend && (
+        <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={12} />
+      )}
 
       <div className="space-y-3">
         {siteConfig.ending.lines.map((line, i) => (

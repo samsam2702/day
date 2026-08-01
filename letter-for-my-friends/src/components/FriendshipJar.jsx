@@ -14,12 +14,14 @@ export default function FriendshipJar({ notes }) {
   // fixed, hand-placed positions so the folded papers look scattered
   // naturally inside the jar rather than in a rigid grid
   const positions = [
-    { left: '20%', bottom: '10%', rotate: -8 },
-    { left: '48%', bottom: '6%', rotate: 5 },
-    { left: '68%', bottom: '16%', rotate: -3 },
-    { left: '32%', bottom: '30%', rotate: 10 },
-    { left: '58%', bottom: '34%', rotate: -12 },
-    { left: '45%', bottom: '48%', rotate: 4 },
+    { left: '18%', bottom: '8%', rotate: -8 },
+    { left: '42%', bottom: '5%', rotate: 5 },
+    { left: '66%', bottom: '10%', rotate: -3 },
+    { left: '28%', bottom: '22%', rotate: 10 },
+    { left: '54%', bottom: '20%', rotate: -12 },
+    { left: '76%', bottom: '26%', rotate: 6 },
+    { left: '36%', bottom: '38%', rotate: -6 },
+    { left: '60%', bottom: '42%', rotate: 9 },
   ]
 
   return (

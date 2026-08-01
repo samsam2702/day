@@ -10,161 +10,199 @@
  * needs to change.
  *
  * Fields:
- *  - id            unique slug, used as the URL-safe key
- *  - name          display name shown on the name-selection card
- *  - accentColor   a soft tailwind-safe hex used for that friend's
- *                  floating background accents (keep it muted!)
- *  - letter        { greeting, body[], signoff }
- *                  body is an array of paragraphs so the typewriter
- *                  effect can pace itself paragraph by paragraph
- *  - jarNotes      array of short strings, one per folded paper in
- *                  the Friendship Jar
- *  - voiceNote     { src, duration } - path under /src/assets/voice
- *  - photo         optional path under /src/assets/images (used as
- *                  a soft polaroid inside the letter, optional)
+ *  - id                unique slug, used as the URL-safe key and as
+ *                      the download filename suffix
+ *  - name               display name shown on the name-selection card
+ *  - themeColor         hex used for this friend's accent (buttons,
+ *                      borders, glow) — keep it soft, never bright
+ *  - floatingAnimation  one of the FLOATING_ANIMATION_TYPES below —
+ *                      selects which ambient animation plays for
+ *                      this friend. Only ONE animation type is ever
+ *                      shown at a time (the selected friend's).
+ *  - music              { src, label } — background track that starts
+ *                      once the letter appears. label is optional
+ *                      (e.g. song title) and only shown as a caption.
+ *  - voiceNote          { src } — or null. When null, the Voice
+ *                      Message page and its nav button are skipped
+ *                      entirely for that friend.
+ *  - letter             { greeting, body[], signoff }
+ *  - jarNotes           array of short strings, one per folded paper
+ *                      in the Friendship Jar (count varies by friend)
+ *  - photo              optional path under /src/assets/images
  * ------------------------------------------------------------------
  */
 
+export const FLOATING_ANIMATION_TYPES = {
+  HEARTS_PINK: 'hearts-pink',
+  HEARTS_DOUBLE: 'hearts-double',
+  STARS: 'stars',
+  SUNSHINE: 'sunshine',
+  HEARTS_PURPLE: 'hearts-purple',
+  HEARTS_RED: 'hearts-red',
+}
+
 const friends = [
   {
-    id: 'aarifa',
-    name: 'Aarifa',
-    accentColor: '#E9D3C9',
+    id: 'samya',
+    name: 'Samya',
+    themeColor: '#F0C6D2', // soft pink
+    floatingAnimation: FLOATING_ANIMATION_TYPES.HEARTS_PINK,
+    music: { src: '/src/assets/music/samya.mp3', label: 'Avalum Naanum' },
+    voiceNote: { src: '/src/assets/voices/samya.mp3' },
     letter: {
-      greeting: 'Happy Friendship Day,\nAarifa',
+      greeting: 'Happy Friendship Day,\nSamya',
       body: [
-        "I don't think I've ever properly told you how much your friendship means to me — so I'm telling you now, in the most old-fashioned way I know how.",
-        "Thank you for the laughter, the late-night talks, and for always showing up exactly when it mattered.",
-        "Whatever life throws at us next, I'm glad I get to face it knowing you're somewhere out there, rooting for me.",
+        'Placeholder letter — I will replace this later with something written just for you.',
+        'A second paragraph goes here — a memory, an inside joke, a thank you.',
+        'A closing thought that feels like us.',
       ],
       signoff: 'With all my heart,\nyour friend',
     },
     jarNotes: [
-      "The way you always know what to say makes hard days softer.",
-      "I still remember the first time we really laughed together — I knew right then.",
-      "You make ordinary days feel like something worth remembering.",
-      "Thank you for never letting distance feel like distance.",
+      'You make ordinary days feel lighter.',
+      'Thank you for always showing up.',
+      'I still think about that one time we laughed until we cried.',
+      "You're one of the easiest people to talk to.",
+      'Grateful our paths crossed.',
+      'Your kindness never goes unnoticed.',
       "You're the kind of friend people write letters about.",
+      'Here\'s to many more memories together.',
     ],
-    voiceNote: {
-      src: '/src/assets/voice/aarifa.mp3',
-      duration: 0,
-    },
     photo: null,
   },
   {
-    id: 'friend-2',
-    name: 'Friend Two',
-    accentColor: '#C7D0BE',
+    id: 'saniya',
+    name: 'Saniya',
+    themeColor: '#E8A6B8', // rose pink
+    floatingAnimation: FLOATING_ANIMATION_TYPES.HEARTS_DOUBLE,
+    music: { src: '/src/assets/music/saniya.mp3', label: 'Feel My Love' },
+    voiceNote: { src: '/src/assets/voices/saniya.mp3' },
     letter: {
-      greeting: 'Happy Friendship Day,\nFriend Two',
+      greeting: 'Happy Friendship Day,\nSaniya',
       body: [
-        'Replace this paragraph with something true and specific about your friendship.',
-        'A second paragraph — a memory, an inside joke, a thank you.',
-        'A closing thought that feels like you.',
+        'Placeholder letter — I will replace this later with something written just for you.',
+        'A second paragraph goes here — a memory, an inside joke, a thank you.',
+        'A closing thought that feels like us.',
       ],
       signoff: 'With love,\nyour friend',
     },
     jarNotes: [
-      'A short, warm note.',
-      'Another small memory.',
-      'Something you appreciate about them.',
-      'A silly inside joke.',
-      'A quiet thank you.',
+      'You make ordinary days feel lighter.',
+      'Thank you for always showing up.',
+      'I still think about that one time we laughed until we cried.',
+      "You're one of the easiest people to talk to.",
+      'Grateful our paths crossed.',
+      'Your kindness never goes unnoticed.',
+      "You're the kind of friend people write letters about.",
+      'Here\'s to many more memories together.',
     ],
-    voiceNote: { src: '/src/assets/voice/friend-2.mp3', duration: 0 },
     photo: null,
   },
   {
-    id: 'friend-3',
-    name: 'Friend Three',
-    accentColor: '#DDC79A',
+    id: 'shafin',
+    name: 'Shafin',
+    themeColor: '#D9B36C', // gold & cream
+    floatingAnimation: FLOATING_ANIMATION_TYPES.STARS,
+    music: { src: '/src/assets/music/shafin.mp3', label: 'Jo Tum Mere Ho' },
+    voiceNote: { src: '/src/assets/voices/shafin.mp3' },
     letter: {
-      greeting: 'Happy Friendship Day,\nFriend Three',
+      greeting: 'Happy Friendship Day,\nShafin',
       body: [
-        'Replace this paragraph with something true and specific about your friendship.',
-        'A second paragraph — a memory, an inside joke, a thank you.',
-        'A closing thought that feels like you.',
+        'Placeholder letter — I will replace this later with something written just for you.',
+        'A second paragraph goes here — a memory, an inside joke, a thank you.',
+        'A closing thought that feels like us.',
+      ],
+      signoff: 'With gratitude,\nyour friend',
+    },
+    jarNotes: [
+      'You make ordinary days feel lighter.',
+      'Thank you for always showing up.',
+      'I still think about that one time we laughed until we cried.',
+      "You're one of the easiest people to talk to.",
+      'Grateful our paths crossed.',
+      'Your kindness never goes unnoticed.',
+      "You're the kind of friend people write letters about.",
+      'Here\'s to many more memories together.',
+    ],
+    photo: null,
+  },
+  {
+    id: 'shobanaa',
+    name: 'Shobanaa',
+    themeColor: '#F0D48A', // soft yellow
+    floatingAnimation: FLOATING_ANIMATION_TYPES.SUNSHINE,
+    music: { src: '/src/assets/music/shobanaa.mp3', label: 'Tum Se Hi' },
+    voiceNote: { src: '/src/assets/voices/shobanaa.mp3' },
+    letter: {
+      greeting: 'Happy Friendship Day,\nShobanaa',
+      body: [
+        'Placeholder letter — I will replace this later with something written just for you.',
+        'A second paragraph goes here — a memory, an inside joke, a thank you.',
+        'A closing thought that feels like us.',
+      ],
+      signoff: 'With warmth,\nyour friend',
+    },
+    jarNotes: [
+      'You make ordinary days feel lighter.',
+      'Thank you for always showing up.',
+      'I still think about that one time we laughed until we cried.',
+      "You're one of the easiest people to talk to.",
+      'Grateful our paths crossed.',
+      'Your kindness never goes unnoticed.',
+      "You're the kind of friend people write letters about.",
+      'Here\'s to many more memories together.',
+    ],
+    photo: null,
+  },
+  {
+    id: 'shanofar',
+    name: 'Shanofar',
+    themeColor: '#C9B6E4', // lavender
+    floatingAnimation: FLOATING_ANIMATION_TYPES.HEARTS_PURPLE,
+    music: { src: '/src/assets/music/shanofar.mp3', label: 'Enna Oru Azhagiyada' },
+    voiceNote: { src: '/src/assets/voices/shanofar.mp3' },
+    letter: {
+      greeting: 'Happy Friendship Day,\nShanofar',
+      body: [
+        'Placeholder letter — I will replace this later with something written just for you.',
+        'A second paragraph goes here — a memory, an inside joke, a thank you.',
+        'A closing thought that feels like us.',
       ],
       signoff: 'With love,\nyour friend',
     },
     jarNotes: [
-      'A short, warm note.',
-      'Another small memory.',
-      'Something you appreciate about them.',
-      'A silly inside joke.',
-      'A quiet thank you.',
+      'You make ordinary days feel lighter.',
+      'Thank you for always showing up.',
+      'I still think about that one time we laughed until we cried.',
+      "You're one of the easiest people to talk to.",
+      'Grateful our paths crossed.',
+      'Your kindness never goes unnoticed.',
+      "You're the kind of friend people write letters about.",
+      'Here\'s to many more memories together.',
     ],
-    voiceNote: { src: '/src/assets/voice/friend-3.mp3', duration: 0 },
     photo: null,
   },
   {
-    id: 'friend-4',
-    name: 'Friend Four',
-    accentColor: '#E7DCC7',
+    id: 'roshini',
+    name: 'Roshini',
+    themeColor: '#E3A5A0', // soft red
+    floatingAnimation: FLOATING_ANIMATION_TYPES.HEARTS_RED,
+    music: { src: '/src/assets/music/roshini.mp3', label: 'Soft Violin Instrumental' },
+    voiceNote: null, // no voice message for Roshini — Voice page is skipped entirely
     letter: {
-      greeting: 'Happy Friendship Day,\nFriend Four',
+      greeting: 'Happy Friendship Day,\nRoshini',
       body: [
-        'Replace this paragraph with something true and specific about your friendship.',
-        'A second paragraph — a memory, an inside joke, a thank you.',
-        'A closing thought that feels like you.',
+        'Placeholder letter — I will replace this later with something written just for you.',
+        'A second paragraph goes here — a memory, an inside joke, a thank you.',
+        'A closing thought that feels like us.',
       ],
       signoff: 'With love,\nyour friend',
     },
     jarNotes: [
-      'A short, warm note.',
-      'Another small memory.',
-      'Something you appreciate about them.',
-      'A silly inside joke.',
-      'A quiet thank you.',
+      "You're one of the kindest people I know.",
+      'Thank you for every little moment.',
+      'Wishing you happiness always.',
     ],
-    voiceNote: { src: '/src/assets/voice/friend-4.mp3', duration: 0 },
-    photo: null,
-  },
-  {
-    id: 'friend-5',
-    name: 'Friend Five',
-    accentColor: '#D9B8A9',
-    letter: {
-      greeting: 'Happy Friendship Day,\nFriend Five',
-      body: [
-        'Replace this paragraph with something true and specific about your friendship.',
-        'A second paragraph — a memory, an inside joke, a thank you.',
-        'A closing thought that feels like you.',
-      ],
-      signoff: 'With love,\nyour friend',
-    },
-    jarNotes: [
-      'A short, warm note.',
-      'Another small memory.',
-      'Something you appreciate about them.',
-      'A silly inside joke.',
-      'A quiet thank you.',
-    ],
-    voiceNote: { src: '/src/assets/voice/friend-5.mp3', duration: 0 },
-    photo: null,
-  },
-  {
-    id: 'friend-6',
-    name: 'Friend Six',
-    accentColor: '#AAB79E',
-    letter: {
-      greeting: 'Happy Friendship Day,\nFriend Six',
-      body: [
-        'Replace this paragraph with something true and specific about your friendship.',
-        'A second paragraph — a memory, an inside joke, a thank you.',
-        'A closing thought that feels like you.',
-      ],
-      signoff: 'With love,\nyour friend',
-    },
-    jarNotes: [
-      'A short, warm note.',
-      'Another small memory.',
-      'Something you appreciate about them.',
-      'A silly inside joke.',
-      'A quiet thank you.',
-    ],
-    voiceNote: { src: '/src/assets/voice/friend-6.mp3', duration: 0 },
     photo: null,
   },
 ]

@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageShell from '../components/PageShell'
 import FriendshipJar from '../components/FriendshipJar'
-import MusicToggle from '../components/MusicToggle'
+import FloatingThemeAnimation from '../components/FloatingThemeAnimation'
+import MusicPlayer from '../components/MusicPlayer'
 import Button from '../components/Button'
 import { fadeUp } from '../animations/variants'
 import { useFriend } from '../context/FriendContext'
@@ -14,9 +15,16 @@ export default function JarPage() {
 
   if (!friend) return null
 
+  // Roshini (and any friend with voiceNote: null) skips the Voice
+  // Message page entirely and goes straight to Download.
+  const handleContinue = () => {
+    navigate(friend.voiceNote ? '/voice' : '/download')
+  }
+
   return (
     <PageShell bg="bg-gradient-to-b from-sage-light via-paper to-paper">
-      <MusicToggle />
+      <FloatingThemeAnimation type={friend.floatingAnimation} color={friend.themeColor} count={8} />
+      <MusicPlayer />
 
       <motion.h1 variants={fadeUp} initial="initial" animate="animate" className="font-display text-2xl text-ink">
         {siteConfig.jar.title}
@@ -36,7 +44,7 @@ export default function JarPage() {
       </motion.div>
 
       <motion.div variants={fadeUp} custom={0.4} initial="initial" animate="animate" className="mt-10">
-        <Button onClick={() => navigate('/voice')}>Continue</Button>
+        <Button onClick={handleContinue}>Continue</Button>
       </motion.div>
     </PageShell>
   )
