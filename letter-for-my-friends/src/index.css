@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-paper text-ink antialiased;
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  }
+
+  ::selection {
+    @apply bg-blush-dark/50;
+  }
+
+  /* Visible keyboard focus everywhere, per accessibility floor */
+  :focus-visible {
+    outline: 2px solid #C6A671;
+    outline-offset: 2px;
+  }
+
+  /* Respect reduced-motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

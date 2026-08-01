@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <filter id="paperFibers">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="4" seed="7" result="turb"/>
+      <feColorMatrix in="turb" type="matrix"
+        values="0 0 0 0 0.98
+                0 0 0 0 0.96
+                0 0 0 0 0.91
+                0 0 0 0.35 0"/>
+    </filter>
+    <linearGradient id="foldShadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4A3F35" stop-opacity="0.05"/>
+      <stop offset="50%" stop-color="#4A3F35" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#4A3F35" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="#FBF6EE"/>
+  <rect width="800" height="1000" filter="url(#paperFibers)"/>
+  <rect width="800" height="1000" fill="url(#foldShadow)"/>
+  <line x1="0" y1="333" x2="800" y2="333" stroke="#4A3F35" stroke-opacity="0.04" stroke-width="2"/>
+  <line x1="0" y1="666" x2="800" y2="666" stroke="#4A3F35" stroke-opacity="0.04" stroke-width="2"/>
+</svg>

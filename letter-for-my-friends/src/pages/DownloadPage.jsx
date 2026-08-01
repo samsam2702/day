@@ -1,0 +1,83 @@
+import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import PageShell from '../components/PageShell'
+import MusicToggle from '../components/MusicToggle'
+import Button from '../components/Button'
+import { fadeUp } from '../animations/variants'
+import { useFriend } from '../context/FriendContext'
+import { downloadNodeAsImage } from '../utils/downloadLetter'
+import siteConfig from '../data/siteConfig'
+
+export default function DownloadPage() {
+  const navigate = useNavigate()
+  const { friend } = useFriend()
+  const letterRef = useRef(null)
+  const [downloading, setDownloading] = useState(false)
+
+  if (!friend) return null
+
+  const handleDownload = async () => {
+    setDownloading(true)
+    try {
+      await downloadNodeAsImage(letterRef.current, `letter-for-${friend.id}`)
+    } finally {
+      setDownloading(false)
+    }
+  }
+
+  return (
+    <PageShell>
+      <MusicToggle />
+
+      <motion.h1 variants={fadeUp} initial="initial" animate="animate" className="font-display text-2xl text-ink">
+        {siteConfig.download.title}
+      </motion.h1>
+      <motion.p
+        variants={fadeUp}
+        custom={0.1}
+        initial="initial"
+        animate="animate"
+        className="mt-2 font-body text-sm text-ink/60"
+      >
+        {siteConfig.download.subtitle}
+      </motion.p>
+
+      {/* This is the exact node captured into the downloaded image */}
+      <motion.div
+        variants={fadeUp}
+        custom={0.25}
+        initial="initial"
+        animate="animate"
+        ref={letterRef}
+        className="mt-8 w-full max-w-md rounded-sm bg-paper px-8 py-10 text-left shadow-letter"
+        style={{
+          backgroundImage: "url('/src/assets/textures/paper-texture.svg')",
+          backgroundSize: 'cover',
+        }}
+      >
+        <p className="whitespace-pre-line font-hand text-2xl text-ink">{friend.letter.greeting}</p>
+        <div className="mt-5 space-y-3">
+          {friend.letter.body.map((para, i) => (
+            <p key={i} className="font-body text-sm leading-relaxed text-ink/80">
+              {para}
+            </p>
+          ))}
+        </div>
+        <p className="mt-6 whitespace-pre-line font-hand text-lg text-ink/90">{friend.letter.signoff}</p>
+      </motion.div>
+
+      <motion.div variants={fadeUp} custom={0.4} initial="initial" animate="animate" className="mt-8">
+        <Button onClick={handleDownload} disabled={downloading}>
+          {downloading ? 'Preparing...' : siteConfig.download.button}
+        </Button>
+      </motion.div>
+
+      <motion.div variants={fadeUp} custom={0.55} initial="initial" animate="animate" className="mt-6">
+        <Button variant="ghost" onClick={() => navigate('/ending')}>
+          Continue
+        </Button>
+      </motion.div>
+    </PageShell>
+  )
+}
